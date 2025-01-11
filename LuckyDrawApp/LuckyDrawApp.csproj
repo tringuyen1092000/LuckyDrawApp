@@ -17,4 +17,10 @@
       </Resource>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Sounds\SpinningEffect.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

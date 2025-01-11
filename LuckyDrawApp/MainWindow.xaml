@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:LuckyDrawApp"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="900"
-        Width="1600"
+        Height="1080"
+        Width="1920"
         WindowState="Maximized"
         ResizeMode="NoResize"
         WindowStyle="None"
@@ -46,7 +46,7 @@
                     </Rectangle.Effect>
                 </Rectangle>
                 <TextBlock
-                    Name="_firstDigitTxt"
+                    Name="FirstDigitTxt"
                     Text="{Binding Path=FirstDigit}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
@@ -68,7 +68,7 @@
                     </Rectangle.Effect>
                 </Rectangle>
                 <TextBlock
-                    Name="_midDigitTxt"
+                    Name="MidDigitTxt"
                     Text="{Binding Path=MidDigit}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
@@ -89,7 +89,7 @@
                     </Rectangle.Effect>
                 </Rectangle>
                 <TextBlock
-                    Name="_lastDigitTxt"
+                    Name="LastDigitTxt"
                     Text="{Binding Path=LastDigit}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
@@ -113,7 +113,7 @@
             Grid.Row="0"
             Width="200"
             Height="50"
-            Content="Start"
+            Content="START"
             Command="{Binding Path=StartCommand}"
             IsEnabled="{Binding Path=!IsSpinning}"
             >
