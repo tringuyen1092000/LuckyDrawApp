@@ -10,69 +10,125 @@
         Width="1600"
         WindowState="Maximized"
         ResizeMode="NoResize"
-        WindowStyle="None">
+        WindowStyle="None"
+        >
     <Window.Background>
-        <ImageBrush ImageSource="../Images/LuckyDrawBG.png"></ImageBrush>
+        <ImageBrush ImageSource="Images/LuckyDrawBG.png"></ImageBrush>
     </Window.Background>
-    
-    <Window.Resources>
-        <Style x:Key="BeautifulButton" TargetType="Button">
-            <Setter Property="Background" Value="Red"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="DarkRed"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="IndianRed"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
-    
+
     <Grid VerticalAlignment="Center"
           HorizontalAlignment="Center"
           ShowGridLines="False"
           Width="512"
           Height="896"
-    >
+          >
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="2*" />
             <RowDefinition Height="3*" />
-            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <StackPanel
-            Grid.Row="1"
+            Orientation="Horizontal"
+            Grid.Row="0"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-        >
-            <TextBlock
-                Name="NumberDisplay"
-                FontSize="150"
-                HorizontalAlignment="Center"
-                />
-            <Button
-                Margin="0,200,0,0"
-                Style="{StaticResource BeautifulButton}"
-                Width="100"
-                Height="40"
-                Content="Start"
-                Click="StartButton_Click"
-                />
+            >
+            <Grid Margin="5" Width="110" Height="200">
+                <Rectangle Stroke="Black" StrokeThickness="2" RadiusX="20" RadiusY="20" >
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="Gray" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                    <Rectangle.Effect>
+                        <DropShadowEffect Color="Black" Direction="320" ShadowDepth="10" BlurRadius="10" Opacity="0.5"/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBlock
+                    Name="_firstDigitTxt"
+                    Text="{Binding Path=FirstDigit}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="200"
+                    Foreground="Red"
+                    />
+            </Grid>
+
+            <Grid Margin="5" Width="110" Height="200">
+                <Rectangle Stroke="Black" StrokeThickness="2" RadiusX="20" RadiusY="20" >
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="Gray" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                    <Rectangle.Effect>
+                        <DropShadowEffect Color="Black" Direction="320" ShadowDepth="10" BlurRadius="10" Opacity="0.5"/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBlock
+                    Name="_midDigitTxt"
+                    Text="{Binding Path=MidDigit}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="200"
+                    Foreground="Red"/>
+            </Grid>
+
+            <Grid Margin="5" Width="110" Height="200">
+                <Rectangle Stroke="Black" StrokeThickness="2" RadiusX="20" RadiusY="20" >
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="Gray" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                    <Rectangle.Effect>
+                        <DropShadowEffect Color="Black" Direction="320" ShadowDepth="10" BlurRadius="10" Opacity="0.5"/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBlock
+                    Name="_lastDigitTxt"
+                    Text="{Binding Path=LastDigit}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="200"
+                    Foreground="Red"/>
+            </Grid>
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsSpinning}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=IsSpinning}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
         </StackPanel>
+        <Button
+            Grid.Row="0"
+            Width="200"
+            Height="50"
+            Content="Start"
+            Command="{Binding Path=StartCommand}"
+            IsEnabled="{Binding Path=!IsSpinning}"
+            >
+            <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource BeautifulButton}" >
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsSpinning}" Value="False">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=IsSpinning}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
     </Grid>
 </Window>

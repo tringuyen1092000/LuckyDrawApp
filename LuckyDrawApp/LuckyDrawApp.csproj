@@ -9,9 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Update="Images\LuckyDrawBG.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
+      <PackageReference Include="Prism.Core" Version="9.0.537" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="Images\LuckyDrawBG.png">
+      </Resource>
     </ItemGroup>
 
 </Project>
