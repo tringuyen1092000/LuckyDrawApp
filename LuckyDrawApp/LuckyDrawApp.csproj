@@ -13,8 +13,18 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Resource Include="Images\LuckyDrawBG.png">
-      </Resource>
+      <None Update="Data\GuestNumbers.csv">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Images\LuckyDrawBG.jpg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\AfterSpinEffect.mp3">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\SpinningEffect.mp3">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
