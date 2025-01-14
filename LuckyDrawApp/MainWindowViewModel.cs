@@ -14,18 +14,15 @@ namespace LuckyDrawApp
       private readonly ICommand _startCommand;
       private readonly List<string> _luckyNumberList = new List<string>();
 
-      private bool _isSpinning;
-      private string _firstDigit;
-      private string _midDigit;
-      private string _lastDigit;
+      private bool _isSpinning = false;
+      private string _firstDigit = "0";
+      private string _midDigit = "0";
+      private string _lastDigit = "0";
+      private string _luckyNumber = "000";
 
       public MainWindowViewModel()
       {
-         _firstDigit = "0";
-         _midDigit = "0";
-         _lastDigit = "0";
-         _isSpinning = false;
-         _startCommand = new DelegateCommand(StartSpinning);
+         _startCommand = new DelegateCommand<bool?>(StartSpinning);
          _luckyNumberList = GetLuckyNumberList(Helper.LUCKY_NUMBER_LIST + Helper.CSV_EXTENSION);
       }
 
@@ -66,11 +63,28 @@ namespace LuckyDrawApp
          }
       }
 
+      public MediaPlayer MediaPlayer => _mediaPlayer;
+
+      public string LuckyNumber
+      {
+         get => _luckyNumber;
+         set
+         {
+            _luckyNumber = value;
+            FirstDigit = _luckyNumber.First().ToString();
+            MidDigit = _luckyNumber[1].ToString();
+            LastDigit = _luckyNumber.Last().ToString();
+            OnPropertyChanged(nameof(LuckyNumber));
+         }
+      }
+
+      public List<string> LuckyNumberList => _luckyNumberList;
+
       public ICommand StartCommand => _startCommand;
 
       public event PropertyChangedEventHandler? PropertyChanged;
 
-      private async void StartSpinning()
+      public async void StartSpinning(bool? returnFirstNumber)
       {
          if (_luckyNumberList.Count > 0)
          {
@@ -83,17 +97,15 @@ namespace LuckyDrawApp
             IsSpinning = true;
 
             // Adjust the number of spins
-            int numberOfSpins = 25;
-            string? luckyNumber = null;
+            int numberOfSpins = 100;
             for (int i = 0; i < numberOfSpins; i++)
             {
                if (!IsSpinning) break;
-               luckyNumber = _luckyNumberList.ElementAt(_random.Next(0, _luckyNumberList.Count));
-               FirstDigit = luckyNumber.First().ToString();
-               MidDigit = luckyNumber[1].ToString();
-               LastDigit = luckyNumber.Last().ToString();
+               LuckyNumber = _luckyNumberList.ElementAt(_random.Next(1, _luckyNumberList.Count));
                await Task.Delay(100); // Adjust delay for speed
             }
+
+            if (returnFirstNumber == true) LuckyNumber = _luckyNumberList.ElementAt(0);
 
             if (_mediaPlayer.Source != null) _mediaPlayer.Stop();
 
@@ -103,17 +115,17 @@ namespace LuckyDrawApp
                _mediaPlayer.Play();
             }
 
-            // Create a TaskCompletionSource to signal when the mouse click happens
-            var clickTaskSource = new TaskCompletionSource<bool>();
+            //// Create a TaskCompletionSource to signal when the mouse click happens
+            //var clickTaskSource = new TaskCompletionSource<bool>();
 
-            // Start waiting for the mouse click asynchronously
-            var waitForClickTask = WaitForMouseClickAsync(clickTaskSource);
+            //// Start waiting for the mouse click asynchronously
+            //var waitForClickTask = WaitForMouseClickAsync(clickTaskSource);
 
-            await waitForClickTask;
+            //await waitForClickTask;
 
-            if (_mediaPlayer.Source != null) _mediaPlayer.Stop();
+            //if (_mediaPlayer.Source != null) _mediaPlayer.Stop();
 
-            if (luckyNumber != null) _luckyNumberList.Remove(luckyNumber);
+            //if (luckyNumber != null) _luckyNumberList.Remove(luckyNumber);
             IsSpinning = false;
          }
          else
