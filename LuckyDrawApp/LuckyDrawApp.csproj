@@ -9,14 +9,27 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="ExcelDataReader" Version="3.7.0" />
+      <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0" />
       <PackageReference Include="Prism.Core" Version="9.0.537" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Data\GuestNumbers.csv">
+      <Resource Include="Fonts\GT-America-Condensed-Bold-Trial.otf" />
+      <Resource Include="Fonts\GT-America-Extended-Bold-Trial.otf" />
+      <Resource Include="Fonts\GT-America-Standard-Black-Italic-Trial.otf" />
+      <Resource Include="Fonts\GT-America-Standard-Bold-Trial.otf" />
+      <Resource Include="Fonts\MYRIADPRO-REGULAR.OTF" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Data\EmployeeList.xlsx">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="Images\LuckyDrawBG.jpg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Images\StageBG.jpg">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="Sounds\AfterSpinEffect.mp3">

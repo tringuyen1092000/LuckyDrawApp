@@ -6,132 +6,65 @@
         xmlns:local="clr-namespace:LuckyDrawApp"
         mc:Ignorable="d"
         Title="MainWindow"
-        Width="512"
-        Height="896"
+        Width="2560"
+        Height="1280"
         WindowState="Normal"
         ResizeMode="NoResize"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         KeyDown="Window_KeyDown"
     >
-    <Grid VerticalAlignment="Top"
-          HorizontalAlignment="Center"
-          Margin="5,70,0,0"
-          ShowGridLines="False"
-          >
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <StackPanel
-            Orientation="Horizontal"
-            Grid.Row="0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            >
-            <Grid Margin="5" Width="50" Height="120">
-                <!--<Rectangle Stroke="Black" StrokeThickness="2" RadiusX="20" RadiusY="20" >
-                    <Rectangle.Fill>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="White" Offset="0"/>
-                            <GradientStop Color="Gray" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Rectangle.Fill>
-                    <Rectangle.Effect>
-                        <DropShadowEffect Color="Black" Direction="320" ShadowDepth="10" BlurRadius="10" Opacity="0.5"/>
-                    </Rectangle.Effect>
-                </Rectangle>-->
-                <TextBlock
-                    Name="FirstDigitTxt"
-                    Text="{Binding Path=FirstDigit}"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="100"
-                    Foreground="Blue"
-                    />
-            </Grid>
-
-            <Grid Margin="5" Width="50" Height="120">
-                <!--<Rectangle Stroke="Black" StrokeThickness="2" RadiusX="20" RadiusY="20" >
-                    <Rectangle.Fill>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="White" Offset="0"/>
-                            <GradientStop Color="Gray" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Rectangle.Fill>
-                    <Rectangle.Effect>
-                        <DropShadowEffect Color="Black" Direction="320" ShadowDepth="10" BlurRadius="10" Opacity="0.5"/>
-                    </Rectangle.Effect>
-                </Rectangle>-->
-                <TextBlock
-                    Name="MidDigitTxt"
-                    Text="{Binding Path=MidDigit}"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="100"
-                    Foreground="Blue"/>
-            </Grid>
-
-            <Grid Margin="5" Width="50" Height="120">
-                <!--<Rectangle Stroke="Black" StrokeThickness="2" RadiusX="20" RadiusY="20" >
-                    <Rectangle.Fill>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="White" Offset="0"/>
-                            <GradientStop Color="Gray" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Rectangle.Fill>
-                    <Rectangle.Effect>
-                        <DropShadowEffect Color="Black" Direction="320" ShadowDepth="10" BlurRadius="10" Opacity="0.5"/>
-                    </Rectangle.Effect>
-                </Rectangle>-->
-                <TextBlock
-                    Name="LastDigitTxt"
-                    Text="{Binding Path=LastDigit}"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="100"
-                    Foreground="Blue"/>
-            </Grid>
-
-            <!--<StackPanel.Style>
-                <Style TargetType="StackPanel">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=IsSpinning}" Value="True">
-                            <Setter Property="Visibility" Value="Visible" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Path=IsSpinning}" Value="False">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </StackPanel.Style>-->
-        </StackPanel>
-        <!--<Grid
-            Grid.Row="0"
-            VerticalAlignment="Center"
-            Height="120"
-            Margin="0,10,0,0"
-            >
-            <Button
-                Width="180"
-                Height="50"
-                Content="START"
-                Command="{Binding Path=StartCommand}"
-                IsEnabled="{Binding Path=!IsSpinning}"
-                >
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource BeautifulButton}" >
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=IsSpinning}" Value="False">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Path=IsSpinning}" Value="True">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-        </Grid>-->
-    </Grid>
+    <StackPanel Orientation="Vertical" Width="2000" VerticalAlignment="Center" HorizontalAlignment="Center" >
+        <Border CornerRadius="10 10 0 0" >
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#FFCC33" Offset="0.0" />
+                    <GradientStop Color="#89640E" Offset="0.25" />
+                    <GradientStop Color="#FFCC33" Offset="0.5" />
+                    <GradientStop Color="#89640E" Offset="0.75" />
+                    <GradientStop Color="#FFCC33" Offset="1.0" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <TextBlock Foreground="#993333"
+                       Text="{Binding Path=PrizesTakenOnAvailable}"
+                       FontSize="50"
+                       FontFamily="./Fonts/#GT America Trial Cn Bd"
+                       TextAlignment="Center" >
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="White" BlurRadius="0" ShadowDepth="5" Opacity="0.66" />
+                </TextBlock.Effect>
+            </TextBlock>
+        </Border>
+        <Border CornerRadius="0 0 10 10"
+            MinHeight="900">
+            <Border.Background>
+                <SolidColorBrush Color="#1AFFFFFF"/>
+            </Border.Background>
+            <ItemsControl ItemsSource="{Binding LuckyEmployees}" HorizontalAlignment="Center" >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="{Binding Path=ColumnAmount}" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="100 0 0 0" >
+                            <TextBlock MinWidth="600"
+                                       Foreground="White"
+                                       FontSize="50"
+                                       TextAlignment="Left"
+                                       Text="{Binding Path=Name}"
+                                       FontFamily="Lucida Sans Unicode" />
+                            <TextBlock MinWidth="200"
+                                       Foreground="White"
+                                       FontSize="50"
+                                       TextAlignment="Left"
+                                       Text="{Binding Path=Id}"
+                                       FontFamily="Lucida Sans Unicode" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
+    </StackPanel>
 </Window>

@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows;
-using Prism.Commands;
 using System.IO;
 using System.Windows.Media;
+using ExcelDataReader;
+using System.Data;
+using System.Collections.ObjectModel;
 
 namespace LuckyDrawApp
 {
@@ -12,18 +14,76 @@ namespace LuckyDrawApp
       private readonly Random _random = new Random();
       private readonly MediaPlayer _mediaPlayer = new MediaPlayer();
       private readonly ICommand _startCommand;
-      private readonly List<string> _luckyNumberList = new List<string>();
-
+      private ObservableCollection<Employee> _employeeList = new ObservableCollection<Employee>();
+      private ObservableCollection<Employee> _luckyEmployees = new ObservableCollection<Employee>();
       private bool _isSpinning = false;
-      private string _firstDigit = "0";
-      private string _midDigit = "0";
-      private string _lastDigit = "0";
-      private string _luckyNumber = "000";
+      private int _prizeTaken = 0;
+      private int _availablePrize = 0;
+      private int _prizeAmountPerSpin = 0;
+      private int _columnAmount = 1;
+      private string _prizeTakenOnAvailable = string.Empty;
 
       public MainWindowViewModel()
       {
-         _startCommand = new DelegateCommand<bool?>(StartSpinning);
-         _luckyNumberList = GetLuckyNumberList(Helper.LUCKY_NUMBER_LIST + Helper.CSV_EXTENSION);
+         _startCommand = new DelegateCommand(StartSpinning);
+         _employeeList = GetEmployeeList(Helper.LUCKY_NUMBER_LIST + Helper.XLSX_EXTENSION);
+      }
+
+      public MediaPlayer MediaPlayer => _mediaPlayer;
+
+      public int PrizeTaken
+      {
+         get => _prizeTaken;
+         set
+         {
+            _prizeTaken = value;
+            OnPropertyChanged(nameof(PrizeTaken));
+            OnPropertyChanged(nameof(PrizesTakenOnAvailable));
+         }
+      }
+
+      public int AvailablePrize
+      {
+         get => _availablePrize;
+         set
+         {
+            _availablePrize = value;
+            OnPropertyChanged(nameof(AvailablePrize));
+            OnPropertyChanged(nameof(PrizesTakenOnAvailable));
+         }
+      }
+
+      public int PrizeAmountPerSpin
+      {
+         get => _prizeAmountPerSpin;
+         set
+         {
+            _prizeAmountPerSpin = value;
+            OnPropertyChanged(nameof(PrizeAmountPerSpin));
+         }
+      }
+
+      public int ColumnAmount
+      {
+         get => _columnAmount;
+         set
+         {
+            _columnAmount = value;
+            OnPropertyChanged(nameof(ColumnAmount));
+         }
+      }
+
+      public string PrizesTakenOnAvailable
+      {
+         get
+         {
+            return $"PRIZES TAKEN ({PrizeTaken:D2}/{AvailablePrize:D2})";
+         }
+         set
+         {
+            _prizeTakenOnAvailable = value;
+            OnPropertyChanged(nameof(PrizesTakenOnAvailable));
+         }
       }
 
       public bool IsSpinning
@@ -35,58 +95,34 @@ namespace LuckyDrawApp
             OnPropertyChanged(nameof(IsSpinning));
          }
       }
-      public string FirstDigit
+
+      public ObservableCollection<Employee> LuckyEmployees
       {
-         get => _firstDigit;
+         get => _luckyEmployees;
          set
          {
-            _firstDigit = value;
-            OnPropertyChanged(nameof(FirstDigit));
-         }
-      }
-      public string MidDigit
-      {
-         get => _midDigit;
-         set
-         {
-            _midDigit = value;
-            OnPropertyChanged(nameof(MidDigit));
-         }
-      }
-      public string LastDigit
-      {
-         get => _lastDigit;
-         set
-         {
-            _lastDigit = value;
-            OnPropertyChanged(nameof(LastDigit));
+            _luckyEmployees = value;
+            OnPropertyChanged(nameof(LuckyEmployees));
          }
       }
 
-      public MediaPlayer MediaPlayer => _mediaPlayer;
-
-      public string LuckyNumber
+      public ObservableCollection<Employee> EmployeeList
       {
-         get => _luckyNumber;
+         get => _employeeList;
          set
          {
-            _luckyNumber = value;
-            FirstDigit = _luckyNumber.First().ToString();
-            MidDigit = _luckyNumber[1].ToString();
-            LastDigit = _luckyNumber.Last().ToString();
-            OnPropertyChanged(nameof(LuckyNumber));
+            _employeeList = value;
+            OnPropertyChanged(nameof(EmployeeList));
          }
       }
-
-      public List<string> LuckyNumberList => _luckyNumberList;
 
       public ICommand StartCommand => _startCommand;
 
       public event PropertyChangedEventHandler? PropertyChanged;
 
-      public async void StartSpinning(bool? returnFirstNumber)
+      public async void StartSpinning()
       {
-         if (_luckyNumberList.Count > 0)
+         if (_employeeList.Count > 0)
          {
             if (File.Exists(Helper.SPINNING_EFFECT_PATH))
             {
@@ -97,15 +133,19 @@ namespace LuckyDrawApp
             IsSpinning = true;
 
             // Adjust the number of spins
-            int numberOfSpins = 100;
+            int numberOfSpins = 50;
             for (int i = 0; i < numberOfSpins; i++)
             {
                if (!IsSpinning) break;
-               LuckyNumber = _luckyNumberList.ElementAt(_random.Next(1, _luckyNumberList.Count));
+               LuckyEmployees = GetLuckyEmployees(PrizeAmountPerSpin);
                await Task.Delay(100); // Adjust delay for speed
             }
 
-            if (returnFirstNumber == true) LuckyNumber = _luckyNumberList.ElementAt(0);
+            PrizeTaken += LuckyEmployees.Count;
+            foreach (Employee employee in LuckyEmployees)
+            {
+               EmployeeList.Remove(employee);
+            }
 
             if (_mediaPlayer.Source != null) _mediaPlayer.Stop();
 
@@ -114,18 +154,6 @@ namespace LuckyDrawApp
                _mediaPlayer.Open(new Uri(Helper.AFTER_SPIN_EFFECT_PATH, UriKind.RelativeOrAbsolute));
                _mediaPlayer.Play();
             }
-
-            //// Create a TaskCompletionSource to signal when the mouse click happens
-            //var clickTaskSource = new TaskCompletionSource<bool>();
-
-            //// Start waiting for the mouse click asynchronously
-            //var waitForClickTask = WaitForMouseClickAsync(clickTaskSource);
-
-            //await waitForClickTask;
-
-            //if (_mediaPlayer.Source != null) _mediaPlayer.Stop();
-
-            //if (luckyNumber != null) _luckyNumberList.Remove(luckyNumber);
             IsSpinning = false;
          }
          else
@@ -134,55 +162,63 @@ namespace LuckyDrawApp
          }
       }
 
-      // Helper method to wait for mouse click asynchronously
-      private static async Task WaitForMouseClickAsync(TaskCompletionSource<bool> clickTaskSource)
-      {
-         MouseButtonEventHandler handler = null;
-         handler = (s, e) =>
-         {
-            clickTaskSource.SetResult(true);
-            Mouse.RemovePreviewMouseDownHandler(Application.Current.MainWindow, handler);
-         };
-
-         Mouse.AddPreviewMouseDownHandler(Application.Current.MainWindow, handler);
-
-         await clickTaskSource.Task;
-      }
-
       private void OnPropertyChanged(string propertyName)
       {
          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
       }
 
-      private static List<string> GetLuckyNumberList(string filePath)
+      private ObservableCollection<Employee> GetLuckyEmployees(int amount)
       {
-         List<string> luckyNumberList = new List<string>();
+         ObservableCollection<Employee> luckyEmployeeList = new ObservableCollection<Employee>();
+         for (int i = 0; i < amount; i++)
+         {
+            int index = _random.Next(0, _employeeList.Count);
+            if (luckyEmployeeList.Contains(EmployeeList[index]) == false)
+            {
+               luckyEmployeeList.Add(_employeeList[index]);
+            }
+            else
+            {
+               i--;
+            }
+         }
+
+         return luckyEmployeeList;
+      }
+
+      private static ObservableCollection<Employee> GetEmployeeList(string filePath)
+      {
+         ObservableCollection<Employee> luckyNumberList = new ObservableCollection<Employee>();
+
          if (File.Exists(filePath))
          {
-            using (var reader = new StreamReader(filePath))
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+            using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
             {
-               while (!reader.EndOfStream)
+               using (var reader = ExcelReaderFactory.CreateReader(stream))
                {
-                  string? line = reader.ReadLine();
-                  if (line != null && line.Length == 3 && IsDigitsOnly(line))
+                  var result = reader.AsDataSet();
+                  var table = result.Tables[0];
+
+                  foreach (DataRow row in table.Rows)
                   {
-                     luckyNumberList.Add(line);
+                     string? cellValue = row[0]?.ToString();
+                     if (cellValue != null)
+                     {
+                        string name = cellValue[..(cellValue.IndexOf("-"))].TrimEnd();
+                        string id = cellValue[(cellValue.IndexOf("-") + 2)..].TrimStart();
+                        if (string.IsNullOrWhiteSpace(id) == false && string.IsNullOrWhiteSpace(name) == false)
+                        {
+                           luckyNumberList.Add(new Employee(id, name));
+                        }
+                     }
                   }
                }
             }
          }
+
          return luckyNumberList;
-      }
-
-      private static bool IsDigitsOnly(string str)
-      {
-         foreach (char c in str)
-         {
-            if (c < '0' || c > '9')
-               return false;
-         }
-
-         return true;
       }
    }
 }
