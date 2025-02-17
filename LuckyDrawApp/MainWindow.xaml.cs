@@ -15,35 +15,90 @@ public partial class MainWindow : Window
    {
       InitializeComponent();
       ImageBrush imageBrush = new ImageBrush();
-      if (File.Exists(Helper.LUCKY_DRAW_BACKGROUND_IMAGE_PATH))
+      if (File.Exists(Helper.BACKGROUND_IMAGE_PATH))
       {
-         imageBrush.ImageSource = new BitmapImage(new Uri(Helper.LUCKY_DRAW_BACKGROUND_IMAGE_PATH, UriKind.RelativeOrAbsolute));
+         imageBrush.ImageSource = new BitmapImage(new Uri(Helper.BACKGROUND_IMAGE_PATH, UriKind.RelativeOrAbsolute));
          imageBrush.Stretch = Stretch.None;
       }
       Background = imageBrush;
       DataContext = new MainWindowViewModel();
    }
-
-   private void Window_KeyDown(object sender, KeyEventArgs e)
+   private async void Window_KeyDown(object sender, KeyEventArgs e)
    {
-      if (e.Key == Key.Space)
+      MainWindowViewModel? viewModel = DataContext as MainWindowViewModel;
+      if (viewModel != null)
       {
-         var viewModel = DataContext as MainWindowViewModel;
-         if (viewModel != null && !viewModel.IsSpinning)
+         switch (e.Key)
          {
-            viewModel.MediaPlayer.Stop();
-            viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
-            viewModel.StartSpinning(false);
-         }
-      }
-      else if (e.Key == Key.S)
-      {
-         var viewModel = DataContext as MainWindowViewModel;
-         if (viewModel != null && !viewModel.IsSpinning)
-         {
-            viewModel.MediaPlayer.Stop();
-            viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
-            viewModel.StartSpinning(true);
+            case Key.NumPad1 or Key.D1:
+               if (!viewModel.IsSpinning)
+               {
+                  viewModel.PrizeAmountPerSpin = 1;
+                  viewModel.PrizeTaken = 0;
+                  viewModel.AvailablePrize = 3;
+                  viewModel.ColumnAmount = 1;
+                  viewModel.LuckyEmployees.Clear();
+               }
+               break;
+            case Key.NumPad2 or Key.D2:
+               if (!viewModel.IsSpinning)
+               {
+                  viewModel.PrizeAmountPerSpin = 1;
+                  viewModel.PrizeTaken = 0;
+                  viewModel.AvailablePrize = 8;
+                  viewModel.ColumnAmount = 1;
+                  viewModel.LuckyEmployees.Clear();
+               }
+               break;
+            case Key.NumPad3 or Key.D3:
+               if (!viewModel.IsSpinning)
+               {
+                  viewModel.PrizeAmountPerSpin = 2;
+                  viewModel.PrizeTaken = 0;
+                  viewModel.AvailablePrize = 10;
+                  viewModel.ColumnAmount = 2;
+                  viewModel.LuckyEmployees.Clear();
+               }
+               break;
+            case Key.NumPad4 or Key.D4:
+               if (!viewModel.IsSpinning)
+               {
+                  viewModel.PrizeAmountPerSpin = 5;
+                  viewModel.PrizeTaken = 0;
+                  viewModel.AvailablePrize = 15;
+                  viewModel.ColumnAmount = 1;
+                  viewModel.LuckyEmployees.Clear();
+               }
+               break;
+            case Key.NumPad5 or Key.D5:
+               if (!viewModel.IsSpinning)
+               {
+                  viewModel.PrizeAmountPerSpin = 20;
+                  viewModel.PrizeTaken = 0;
+                  viewModel.AvailablePrize = 60;
+                  viewModel.ColumnAmount = 2;
+                  viewModel.LuckyEmployees.Clear();
+               }
+               break;
+            case Key.Space:
+               if (!viewModel.IsSpinning && viewModel.PrizeTaken < viewModel.AvailablePrize)
+               {
+                  viewModel.MediaPlayer.Stop();
+                  viewModel.StartSpinning();
+               }
+               break;
+            case Key.Enter:
+               if (viewModel.IsSpinning)
+               {
+                  await Task.Delay(2000);
+                  viewModel.IsSpinning = false;
+                  viewModel.MediaPlayer.Stop();
+                  viewModel.MediaPlayer.Open(new Uri(Helper.AFTER_SPIN_EFFECT_PATH, UriKind.RelativeOrAbsolute));
+                  viewModel.MediaPlayer.Play();
+               }
+               break;
+            default:
+               break;
          }
       }
    }
