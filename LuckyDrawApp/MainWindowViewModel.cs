@@ -16,12 +16,12 @@ namespace LuckyDrawApp
       private readonly ICommand _startCommand;
       private ObservableCollection<Employee> _employeeList = new ObservableCollection<Employee>();
       private ObservableCollection<Employee> _luckyEmployees = new ObservableCollection<Employee>();
+      private ObservableCollection<Employee> _prizeList = new ObservableCollection<Employee>();
       private bool _isSpinning = false;
       private int _prizeTaken = 0;
       private int _availablePrize = 0;
       private int _prizeAmountPerSpin = 0;
       private int _columnAmount = 1;
-      private string _prizeTakenOnAvailable = string.Empty;
 
       public MainWindowViewModel()
       {
@@ -75,13 +75,9 @@ namespace LuckyDrawApp
 
       public string PrizesTakenOnAvailable
       {
-         get
-         {
-            return $"PRIZES TAKEN ({PrizeTaken:D2}/{AvailablePrize:D2})";
-         }
+         get => $"PRIZES TAKEN ({PrizeTaken:D2}/{AvailablePrize:D2})";
          set
          {
-            _prizeTakenOnAvailable = value;
             OnPropertyChanged(nameof(PrizesTakenOnAvailable));
          }
       }
@@ -116,6 +112,17 @@ namespace LuckyDrawApp
          }
       }
 
+
+      public ObservableCollection<Employee> PrizeList
+      {
+         get => _prizeList;
+         set
+         {
+            _prizeList = value;
+            OnPropertyChanged(nameof(PrizeList));
+         }
+      }
+
       public ICommand StartCommand => _startCommand;
 
       public event PropertyChangedEventHandler? PropertyChanged;
@@ -145,6 +152,17 @@ namespace LuckyDrawApp
             foreach (Employee employee in LuckyEmployees)
             {
                EmployeeList.Remove(employee);
+               employee.IsAwarded = true;
+               employee.PrizeAwarded = AvailablePrize switch
+               {
+                  3 => 1,
+                  8 => 2,
+                  10 => 3,
+                  15 => 4,
+                  60 => 5,
+                  _ => employee.PrizeAwarded
+               };
+               PrizeList.Add(employee);
             }
 
             if (_mediaPlayer.Source != null) _mediaPlayer.Stop();
@@ -154,11 +172,26 @@ namespace LuckyDrawApp
                _mediaPlayer.Open(new Uri(Helper.AFTER_SPIN_EFFECT_PATH, UriKind.RelativeOrAbsolute));
                _mediaPlayer.Play();
             }
+
+            if (PrizeList.Count == AvailablePrize && AvailablePrize != 60)
+            {
+               await Task.Delay(2000);
+               ColumnAmount = AvailablePrize switch
+               {
+                  3 => 1,
+                  8 => 1,
+                  10 => 2,
+                  15 => 3,
+                  _ => ColumnAmount
+               };
+               LuckyEmployees = PrizeList;
+            }
+
             IsSpinning = false;
          }
          else
          {
-            MessageBox.Show("No lucky number data available!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show("No data available!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
          }
       }
 
@@ -188,7 +221,7 @@ namespace LuckyDrawApp
 
       private static ObservableCollection<Employee> GetEmployeeList(string filePath)
       {
-         ObservableCollection<Employee> luckyNumberList = new ObservableCollection<Employee>();
+         ObservableCollection<Employee> employeeList = new ObservableCollection<Employee>();
 
          if (File.Exists(filePath))
          {
@@ -210,7 +243,7 @@ namespace LuckyDrawApp
                         string id = cellValue[(cellValue.IndexOf("-") + 2)..].TrimStart();
                         if (string.IsNullOrWhiteSpace(id) == false && string.IsNullOrWhiteSpace(name) == false)
                         {
-                           luckyNumberList.Add(new Employee(id, name));
+                           employeeList.Add(new Employee(id, name, false));
                         }
                      }
                   }
@@ -218,7 +251,7 @@ namespace LuckyDrawApp
             }
          }
 
-         return luckyNumberList;
+         return employeeList;
       }
    }
 }
