@@ -38,6 +38,7 @@ public partial class MainWindow : Window
                   viewModel.AvailablePrize = 3;
                   viewModel.ColumnAmount = 1;
                   viewModel.LuckyEmployees.Clear();
+                  viewModel.PrizeList.Clear();
                }
                break;
             case Key.NumPad2 or Key.D2:
@@ -48,6 +49,7 @@ public partial class MainWindow : Window
                   viewModel.AvailablePrize = 8;
                   viewModel.ColumnAmount = 1;
                   viewModel.LuckyEmployees.Clear();
+                  viewModel.PrizeList.Clear();
                }
                break;
             case Key.NumPad3 or Key.D3:
@@ -58,6 +60,7 @@ public partial class MainWindow : Window
                   viewModel.AvailablePrize = 10;
                   viewModel.ColumnAmount = 2;
                   viewModel.LuckyEmployees.Clear();
+                  viewModel.PrizeList.Clear();
                }
                break;
             case Key.NumPad4 or Key.D4:
@@ -68,6 +71,7 @@ public partial class MainWindow : Window
                   viewModel.AvailablePrize = 15;
                   viewModel.ColumnAmount = 1;
                   viewModel.LuckyEmployees.Clear();
+                  viewModel.PrizeList.Clear();
                }
                break;
             case Key.NumPad5 or Key.D5:
@@ -78,6 +82,7 @@ public partial class MainWindow : Window
                   viewModel.AvailablePrize = 60;
                   viewModel.ColumnAmount = 2;
                   viewModel.LuckyEmployees.Clear();
+                  viewModel.PrizeList.Clear();
                }
                break;
             case Key.Space:
