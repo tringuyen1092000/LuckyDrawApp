@@ -9,9 +9,9 @@ namespace LuckyDrawApp
       {
          if (value is int count)
          {
-            return $"Total Guests: {count}";
+            return $"{count} ON AIR";
          }
-         return "Total Guests: 0";
+         return "0 ON AIR";
       }
 
       public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

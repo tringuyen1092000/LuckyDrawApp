@@ -6,23 +6,31 @@
         xmlns:local="clr-namespace:LuckyDrawApp"
         mc:Ignorable="d"
         Title="MainWindow"
-        Width="2560"
-        Height="1280"
+        Width="1920"
+        Height="1080"
         WindowState="Normal"
         ResizeMode="NoResize"
         WindowStyle="None"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="Manual"
+        Left="0"
+        Top="0"
         KeyDown="Window_KeyDown"
     >
     <Window.Resources>
         <local:TotalEmployeesConverter x:Key="_totalEmployeesConverter" />
         <local:PrizeNameConverter x:Key="_prizeNameConverter" />
     </Window.Resources>
-    <StackPanel Orientation="Vertical" MinWidth="2000" Margin="0 220 0 0" VerticalAlignment="Top" HorizontalAlignment="Center" >
-        <TextBlock Margin="0 10"
+    <StackPanel Orientation="Vertical" MinWidth="1600" VerticalAlignment="Top" HorizontalAlignment="Center" >
+        <TextBlock Margin="0 10 0 20"
+                   Foreground="#FFCC33"
+                   FontFamily="./Fonts/#GT America Trial Cn Bd"
+                   FontSize="40"
+                   TextAlignment="Right"
+                   Text="{Binding Path=EmployeeList.Count, Mode=OneTime, Converter={StaticResource _totalEmployeesConverter}}" />
+        <TextBlock
                    Foreground="White"
                    FontFamily="./Fonts/#GT America Trial Ext Bd" 
-                   FontSize="80"
+                   FontSize="{Binding Path=HeaderFontSize}"
                    TextAlignment="Center"
                    Text="{Binding Path=AvailablePrize, Converter={StaticResource _prizeNameConverter}}"/>
         <Border CornerRadius="10 10 0 0" >
@@ -35,9 +43,10 @@
                     <GradientStop Color="#FFCC33" Offset="1.0" />
                 </LinearGradientBrush>
             </Border.Background>
-            <TextBlock Foreground="#993333"
+            <TextBlock x:Name="_txtPrizeTakenOnAvailable"
+                       Foreground="#993333"
                        Text="{Binding Path=PrizesTakenOnAvailable}"
-                       FontSize="50"
+                       FontSize="52"
                        FontFamily="./Fonts/#GT America Trial Cn Bd"
                        TextAlignment="Center" >
                 <TextBlock.Effect>
@@ -46,42 +55,87 @@
             </TextBlock>
         </Border>
         <Border CornerRadius="0 0 10 10"
-                Height="750">
+                MinHeight="620">
             <Border.Background>
                 <SolidColorBrush Color="#1AFFFFFF"/>
             </Border.Background>
-            <ItemsControl ItemsSource="{Binding LuckyEmployees}" HorizontalAlignment="Center" >
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="{Binding Path=ColumnAmount}" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="50 0 0 0" >
-                            <TextBlock MinWidth="600"
+            <Grid>
+                <Canvas Name="FireworksCanvas" IsHitTestVisible="False" />
+                <ItemsControl ItemsSource="{Binding LuckyEmployees}"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              FontSize="{Binding Path=ResultFontSize}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="{Binding Path=ColumnAmount}" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="50 0 0 0" >
+                                <TextBlock MinWidth="{Binding DataContext.NameMinWidth, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                        Foreground="White"
-                                       FontSize="50"
                                        TextAlignment="Left"
                                        Text="{Binding Path=Name}"
                                        FontFamily="Lucida Sans Unicode" />
-                            <TextBlock MinWidth="150"
+                                <TextBlock MinWidth="{Binding DataContext.IdMinWidth, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                        Foreground="White"
-                                       FontSize="50"
                                        TextAlignment="Left"
                                        Text="{Binding Path=Id}"
                                        FontFamily="Lucida Sans Unicode" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
         </Border>
-        <TextBlock Margin="0 10 0 0"
-                   Foreground="#FFCC33"
-                   FontFamily="./Fonts/#GT America Trial Cn Bd"
-                   FontSize="50"
-                   TextAlignment="Center"
-                   Text="{Binding Path=EmployeeList.Count, Mode=OneTime, Converter={StaticResource _totalEmployeesConverter}}"
-                   />
+        <Button Width="264" Height="82" Margin="0 0 0 0" Click="Start_Click" Visibility="Visible" >
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" CornerRadius="20">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                <GradientStop Color="#FFCC33" Offset="0.0" />
+                                <GradientStop Color="#89640E" Offset="0.6" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                        <GradientStop Color="#FFD700" Offset="0.0" />
+                                        <GradientStop Color="#B8860B" Offset="0.6" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                        <GradientStop Color="#FFA500" Offset="0.0" />
+                                        <GradientStop Color="#8B4513" Offset="0.6" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Content>
+                <TextBlock Foreground="#993333"
+                           FontSize="52"
+                           FontFamily="./Fonts/#GT America Trial Cn Bd"
+                           TextAlignment="Center"
+                           Text="START">
+                    <TextBlock.Effect>
+                        <DropShadowEffect Color="White" BlurRadius="0" ShadowDepth="5" Opacity="0.66" />
+                    </TextBlock.Effect>
+                </TextBlock>
+            </Button.Content>
+        </Button>
     </StackPanel>
 </Window>

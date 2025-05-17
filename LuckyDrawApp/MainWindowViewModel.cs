@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Windows.Input;
 using System.Windows;
 using System.IO;
 using System.Windows.Media;
@@ -13,20 +12,22 @@ namespace LuckyDrawApp
    {
       private readonly Random _random = new Random();
       private readonly MediaPlayer _mediaPlayer = new MediaPlayer();
-      private readonly ICommand _startCommand;
       private ObservableCollection<Employee> _employeeList = new ObservableCollection<Employee>();
       private ObservableCollection<Employee> _luckyEmployees = new ObservableCollection<Employee>();
       private ObservableCollection<Employee> _prizeList = new ObservableCollection<Employee>();
+      private string _prizesTakenOnAvailable;
       private bool _isSpinning = false;
       private int _prizeTaken = 0;
       private int _availablePrize = 0;
       private int _prizeAmountPerSpin = 0;
       private int _columnAmount = 1;
+      private int _resultFontSize = 110;
+      private int _headerFontSize = 150;
 
       public MainWindowViewModel()
       {
-         _startCommand = new DelegateCommand(StartSpinning);
          _employeeList = GetEmployeeList(Helper.LUCKY_NUMBER_LIST + Helper.XLSX_EXTENSION);
+         _prizesTakenOnAvailable = $"PRIZES TAKEN ({PrizeTaken:D2}/{AvailablePrize:D2})";
       }
 
       public MediaPlayer MediaPlayer => _mediaPlayer;
@@ -72,6 +73,22 @@ namespace LuckyDrawApp
             OnPropertyChanged(nameof(ColumnAmount));
          }
       }
+
+      public int ResultFontSize
+      {
+         get => _resultFontSize;
+         set
+         {
+            _resultFontSize = value;
+            OnPropertyChanged(nameof(ResultFontSize));
+            OnPropertyChanged(nameof(NameMinWidth));
+            OnPropertyChanged(nameof(IdMinWidth));
+         }
+      }
+
+      public double NameMinWidth => ResultFontSize * (ColumnAmount == 3 ? 11 : 12) + (AvailablePrize == 60 ? 100 : 0);
+
+      public double IdMinWidth => ResultFontSize * (ColumnAmount == 3 ? 4 : 5);
 
       public string PrizesTakenOnAvailable
       {
@@ -123,11 +140,19 @@ namespace LuckyDrawApp
          }
       }
 
-      public ICommand StartCommand => _startCommand;
+      public int HeaderFontSize
+      {
+         get => _headerFontSize;
+         set
+         {
+            _headerFontSize = value;
+            OnPropertyChanged(nameof(HeaderFontSize));
+         }
+      }
 
       public event PropertyChangedEventHandler? PropertyChanged;
 
-      public async void StartSpinning()
+      public async void StartSpinning(bool isRedraw = false)
       {
          if (_employeeList.Count > 0)
          {
@@ -149,6 +174,15 @@ namespace LuckyDrawApp
             }
 
             PrizeTaken += LuckyEmployees.Count;
+            if (!isRedraw)
+            {
+               Application.Current.Dispatcher.Invoke(() =>
+               {
+                  var mainWindow = (MainWindow)Application.Current.MainWindow;
+                  mainWindow._txtPrizeTakenOnAvailable.Text = PrizesTakenOnAvailable;
+               });
+            }
+
             foreach (Employee employee in LuckyEmployees)
             {
                EmployeeList.Remove(employee);
@@ -173,6 +207,14 @@ namespace LuckyDrawApp
                _mediaPlayer.Play();
             }
 
+            // Show congratulation effect
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+               var mainWindow = (MainWindow)Application.Current.MainWindow;
+               mainWindow.ShowStars();
+               mainWindow.ShowCircles();
+            });
+
             if (PrizeList.Count == AvailablePrize && AvailablePrize != 60)
             {
                await Task.Delay(2000);
@@ -185,6 +227,14 @@ namespace LuckyDrawApp
                   _ => ColumnAmount
                };
                LuckyEmployees = PrizeList;
+
+               // Show congratulation effect
+               Application.Current.Dispatcher.Invoke(() =>
+               {
+                  var mainWindow = (MainWindow)Application.Current.MainWindow;
+                  mainWindow.ShowStars();
+                  mainWindow.ShowCircles();
+               });
             }
 
             IsSpinning = false;
