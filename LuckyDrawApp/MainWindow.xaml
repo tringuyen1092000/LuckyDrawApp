@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LuckyDrawApp"
         mc:Ignorable="d"
         Title="MainWindow"
-        Width="512"
+        Width="1792"
         Height="896"
         WindowState="Normal"
         ResizeMode="NoResize"
@@ -14,9 +14,21 @@
         WindowStartupLocation="CenterScreen"
         KeyDown="Window_KeyDown"
     >
-    <Grid VerticalAlignment="Top"
+    <Window.Background>
+        <ImageBrush ImageSource="./Images/LuckyDrawBG.jpg" Stretch="None"/>
+    </Window.Background>
+    <Window.Resources>
+        <Style x:Key="DigitTextStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="/LuckyDrawApp;component/Fonts/UTM AptimaBold.ttf#UTM Aptima Bold" />
+            <Setter Property="FontSize" Value="200" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="#ecbc9b" />
+            <Setter Property="Margin" Value="20 -50 20 0" />
+        </Style>
+    </Window.Resources>
+    <Grid VerticalAlignment="Center"
           HorizontalAlignment="Center"
-          Margin="5,70,0,0"
           ShowGridLines="False"
           >
         <Grid.RowDefinitions>
@@ -29,82 +41,65 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             >
-            <Grid Margin="5" Width="50" Height="120">
-                <!--<Rectangle Stroke="Black" StrokeThickness="2" RadiusX="20" RadiusY="20" >
+            <Grid Margin="20">
+                <Rectangle Stroke="#deb091" StrokeThickness="2" RadiusX="20" RadiusY="20" >
                     <Rectangle.Fill>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="White" Offset="0"/>
-                            <GradientStop Color="Gray" Offset="1"/>
-                        </LinearGradientBrush>
+                        <ImageBrush ImageSource="./Images/LuckyDrawBG.jpg" Stretch="UniformToFill"/>
                     </Rectangle.Fill>
                     <Rectangle.Effect>
                         <DropShadowEffect Color="Black" Direction="320" ShadowDepth="10" BlurRadius="10" Opacity="0.5"/>
                     </Rectangle.Effect>
-                </Rectangle>-->
+                </Rectangle>
                 <TextBlock
                     Name="FirstDigitTxt"
                     Text="{Binding Path=FirstDigit}"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="100"
-                    Foreground="Blue"
-                    />
+                    Style="{StaticResource DigitTextStyle}"
+                        >
+                    <TextBlock.Effect>
+                        <DropShadowEffect Color="#fbddc8" Direction="320" ShadowDepth="10" BlurRadius="10" Opacity="0.5"/>
+                    </TextBlock.Effect>
+                </TextBlock>
             </Grid>
 
-            <Grid Margin="5" Width="50" Height="120">
-                <!--<Rectangle Stroke="Black" StrokeThickness="2" RadiusX="20" RadiusY="20" >
+            <Grid Margin="20">
+                <Rectangle Stroke="#deb091" StrokeThickness="2" RadiusX="20" RadiusY="20" >
                     <Rectangle.Fill>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="White" Offset="0"/>
-                            <GradientStop Color="Gray" Offset="1"/>
-                        </LinearGradientBrush>
+                        <ImageBrush ImageSource="./Images/LuckyDrawBG.jpg" Stretch="UniformToFill"/>
                     </Rectangle.Fill>
                     <Rectangle.Effect>
                         <DropShadowEffect Color="Black" Direction="320" ShadowDepth="10" BlurRadius="10" Opacity="0.5"/>
                     </Rectangle.Effect>
-                </Rectangle>-->
+                </Rectangle>
                 <TextBlock
                     Name="MidDigitTxt"
                     Text="{Binding Path=MidDigit}"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="100"
-                    Foreground="Blue"/>
+                    Style="{StaticResource DigitTextStyle}"
+                    >
+                    <TextBlock.Effect>
+                        <DropShadowEffect Color="#fbddc8" Direction="320" ShadowDepth="10" BlurRadius="10" Opacity="0.5"/>
+                    </TextBlock.Effect>
+                </TextBlock>
             </Grid>
 
-            <Grid Margin="5" Width="50" Height="120">
-                <!--<Rectangle Stroke="Black" StrokeThickness="2" RadiusX="20" RadiusY="20" >
+            <Grid Margin="20">
+                <Rectangle Stroke="#deb091" StrokeThickness="2" RadiusX="20" RadiusY="20" >
                     <Rectangle.Fill>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="White" Offset="0"/>
-                            <GradientStop Color="Gray" Offset="1"/>
-                        </LinearGradientBrush>
+                        <ImageBrush ImageSource="./Images/LuckyDrawBG.jpg" Stretch="UniformToFill"/>
                     </Rectangle.Fill>
                     <Rectangle.Effect>
                         <DropShadowEffect Color="Black" Direction="320" ShadowDepth="10" BlurRadius="10" Opacity="0.5"/>
                     </Rectangle.Effect>
-                </Rectangle>-->
+                </Rectangle>
                 <TextBlock
                     Name="LastDigitTxt"
                     Text="{Binding Path=LastDigit}"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="100"
-                    Foreground="Blue"/>
+                    Style="{StaticResource DigitTextStyle}"
+                        >
+                    <TextBlock.Effect>
+                        <DropShadowEffect Color="#fbddc8" Direction="320" ShadowDepth="10" BlurRadius="10" Opacity="0.5"/>
+                    </TextBlock.Effect>
+                </TextBlock>
             </Grid>
-
-            <!--<StackPanel.Style>
-                <Style TargetType="StackPanel">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=IsSpinning}" Value="True">
-                            <Setter Property="Visibility" Value="Visible" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Path=IsSpinning}" Value="False">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </StackPanel.Style>-->
         </StackPanel>
         <!--<Grid
             Grid.Row="0"

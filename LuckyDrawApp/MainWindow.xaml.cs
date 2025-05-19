@@ -20,31 +20,67 @@ public partial class MainWindow : Window
          imageBrush.ImageSource = new BitmapImage(new Uri(Helper.LUCKY_DRAW_BACKGROUND_IMAGE_PATH, UriKind.RelativeOrAbsolute));
          imageBrush.Stretch = Stretch.None;
       }
-      Background = imageBrush;
+      //Background = imageBrush;
       DataContext = new MainWindowViewModel();
    }
 
    private void Window_KeyDown(object sender, KeyEventArgs e)
    {
+      var viewModel = DataContext as MainWindowViewModel;
       if (e.Key == Key.Space)
       {
-         var viewModel = DataContext as MainWindowViewModel;
-         if (viewModel != null && !viewModel.IsSpinning)
+         if (viewModel != null)
          {
-            viewModel.MediaPlayer.Stop();
-            viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
-            viewModel.StartSpinning(false);
+            if (!viewModel.IsSpinning)
+            {
+               viewModel.MediaPlayer.Stop();
+               viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
+               viewModel.StartSpinning();
+            }
+            else
+            {
+               viewModel.MediaPlayer.Stop();
+               viewModel.IsSpinning = false;
+            }
          }
       }
       else if (e.Key == Key.S)
       {
-         var viewModel = DataContext as MainWindowViewModel;
-         if (viewModel != null && !viewModel.IsSpinning)
+         if (viewModel != null)
          {
-            viewModel.MediaPlayer.Stop();
-            viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
-            viewModel.StartSpinning(true);
+            if (!viewModel.IsSpinning)
+            {
+               viewModel.MediaPlayer.Stop();
+               viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
+               viewModel.StartSpinning(86);
+            }
+            else
+            {
+               viewModel.MediaPlayer.Stop();
+               viewModel.IsSpinning = false;
+            }
          }
+      }
+      else if (e.Key == Key.D)
+      {
+         if (viewModel != null)
+         {
+            if (!viewModel.IsSpinning)
+            {
+               viewModel.MediaPlayer.Stop();
+               viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
+               viewModel.StartSpinning(217);
+            }
+            else
+            {
+               viewModel.MediaPlayer.Stop();
+               viewModel.IsSpinning = false;
+            }
+         }
+      }
+      else if (e.Key == Key.Escape)
+      {
+         Close();
       }
    }
 }

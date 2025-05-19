@@ -13,10 +13,18 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Data\GuestNumbers.csv">
+      <Resource Include="Fonts\1FTV-VIP-MADINAH-AUTHENTIC.OTF" />
+      <Resource Include="Fonts\UTM Aptima.ttf" />
+      <Resource Include="Fonts\UTM AptimaBold.ttf" />
+      <Resource Include="Fonts\UTM AptimaBoldItalic.ttf" />
+      <Resource Include="Fonts\UTM AptimaItalic.ttf" />
+      <Resource Include="Images\LuckyDrawBG.jpg">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Images\LuckyDrawBG.jpg">
+      </Resource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Data\GuestNumbers.csv">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="Sounds\AfterSpinEffect.mp3">

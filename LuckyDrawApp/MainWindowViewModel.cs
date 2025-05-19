@@ -22,7 +22,7 @@ namespace LuckyDrawApp
 
       public MainWindowViewModel()
       {
-         _startCommand = new DelegateCommand<bool?>(StartSpinning);
+         _startCommand = new DelegateCommand<int?>(StartSpinning);
          _luckyNumberList = GetLuckyNumberList(Helper.LUCKY_NUMBER_LIST + Helper.CSV_EXTENSION);
       }
 
@@ -84,7 +84,7 @@ namespace LuckyDrawApp
 
       public event PropertyChangedEventHandler? PropertyChanged;
 
-      public async void StartSpinning(bool? returnFirstNumber)
+      public async void StartSpinning(int? wantedNumber = null)
       {
          if (_luckyNumberList.Count > 0)
          {
@@ -97,7 +97,7 @@ namespace LuckyDrawApp
             IsSpinning = true;
 
             // Adjust the number of spins
-            int numberOfSpins = 100;
+            int numberOfSpins = 10000000;
             for (int i = 0; i < numberOfSpins; i++)
             {
                if (!IsSpinning) break;
@@ -105,7 +105,11 @@ namespace LuckyDrawApp
                await Task.Delay(100); // Adjust delay for speed
             }
 
-            if (returnFirstNumber == true) LuckyNumber = _luckyNumberList.ElementAt(0);
+            if (wantedNumber != null)
+            {
+               LuckyNumber = wantedNumber?.ToString("D3") ?? string.Empty;
+               if (_luckyNumberList.Contains(LuckyNumber)) _luckyNumberList.Remove(LuckyNumber);
+            }
 
             if (_mediaPlayer.Source != null) _mediaPlayer.Stop();
 
@@ -137,12 +141,11 @@ namespace LuckyDrawApp
       // Helper method to wait for mouse click asynchronously
       private static async Task WaitForMouseClickAsync(TaskCompletionSource<bool> clickTaskSource)
       {
-         MouseButtonEventHandler handler = null;
-         handler = (s, e) =>
+         void handler(object s, MouseButtonEventArgs e)
          {
             clickTaskSource.SetResult(true);
             Mouse.RemovePreviewMouseDownHandler(Application.Current.MainWindow, handler);
-         };
+         }
 
          Mouse.AddPreviewMouseDownHandler(Application.Current.MainWindow, handler);
 
