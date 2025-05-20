@@ -20,7 +20,7 @@ public partial class MainWindow : Window
          imageBrush.ImageSource = new BitmapImage(new Uri(Helper.LUCKY_DRAW_BACKGROUND_IMAGE_PATH, UriKind.RelativeOrAbsolute));
          imageBrush.Stretch = Stretch.None;
       }
-      //Background = imageBrush;
+      Background = imageBrush;
       DataContext = new MainWindowViewModel();
    }
 
