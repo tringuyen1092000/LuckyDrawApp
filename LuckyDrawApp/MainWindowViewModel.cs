@@ -119,17 +119,6 @@ namespace LuckyDrawApp
                _mediaPlayer.Play();
             }
 
-            //// Create a TaskCompletionSource to signal when the mouse click happens
-            //var clickTaskSource = new TaskCompletionSource<bool>();
-
-            //// Start waiting for the mouse click asynchronously
-            //var waitForClickTask = WaitForMouseClickAsync(clickTaskSource);
-
-            //await waitForClickTask;
-
-            //if (_mediaPlayer.Source != null) _mediaPlayer.Stop();
-
-            //if (luckyNumber != null) _luckyNumberList.Remove(luckyNumber);
             IsSpinning = false;
          }
          else

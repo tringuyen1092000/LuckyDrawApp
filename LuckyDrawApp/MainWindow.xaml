@@ -16,12 +16,12 @@
     >
     <Window.Resources>
         <Style x:Key="DigitTextStyle" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="/LuckyDrawApp;component/Fonts/LEXEND-SEMIBOLD.ttf#Lexend SemiBold" />
+            <Setter Property="FontFamily" Value="/LuckyDrawApp;component/Fonts/UTM HelvetIns.ttf#UTM HelvetIns" />
             <Setter Property="FontSize" Value="200" />
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Foreground" Value="#42e4f2" />
-            <Setter Property="Margin" Value="0 -15 0 0" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Margin" Value="0 -40 0 0" />
         </Style>
     </Window.Resources>
     <Grid VerticalAlignment="Center"
@@ -50,7 +50,7 @@
                 </TextBlock>
             </Grid>
 
-            <Grid Margin="95 0" Width="150" >
+            <Grid Margin="75 0" Width="150" >
                 <TextBlock
                     Name="MidDigitTxt"
                     Text="{Binding Path=MidDigit}"

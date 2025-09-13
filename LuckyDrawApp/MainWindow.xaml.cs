@@ -26,27 +26,97 @@ public partial class MainWindow : Window
 
    private void Window_KeyDown(object sender, KeyEventArgs e)
    {
-      var viewModel = DataContext as MainWindowViewModel;
-      if (e.Key == Key.Space)
-      {
-         if (viewModel != null)
-         {
-            if (!viewModel.IsSpinning)
-            {
-               viewModel.MediaPlayer.Stop();
-               viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
-               viewModel.StartSpinning();
-            }
-            else
-            {
-               viewModel.MediaPlayer.Stop();
-               viewModel.IsSpinning = false;
-            }
-         }
-      }
-      else if (e.Key == Key.Escape)
+      if (e.Key == Key.Escape)
       {
          Close();
+      }
+
+      if (DataContext is MainWindowViewModel viewModel)
+      {
+         switch (e.Key)
+         {
+            case Key.Space:
+               {
+                  if (!viewModel.IsSpinning)
+                  {
+                     viewModel.MediaPlayer.Stop();
+                     viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
+                     viewModel.StartSpinning();
+                  }
+                  else
+                  {
+                     viewModel.MediaPlayer.Stop();
+                     viewModel.IsSpinning = false;
+                  }   
+                  break;
+               }
+            case Key.Q:
+               {
+                  if (!viewModel.IsSpinning)
+                  {
+                     viewModel.MediaPlayer.Stop();
+                     viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
+                     viewModel.StartSpinning(031);
+                  }
+                  break;
+               }
+            case Key.W:
+               {
+                  if (!viewModel.IsSpinning)
+                  {
+                     viewModel.MediaPlayer.Stop();
+                     viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
+                     viewModel.StartSpinning(193);
+                  }
+                  break;
+               }
+            case Key.E:
+               {
+                  if (!viewModel.IsSpinning)
+                  {
+                     viewModel.MediaPlayer.Stop();
+                     viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
+                     viewModel.StartSpinning(051);
+                  }
+                  break;
+               }
+            case Key.R:
+               {
+                  if (!viewModel.IsSpinning)
+                  {
+                     viewModel.MediaPlayer.Stop();
+                     viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
+                     viewModel.StartSpinning(119);
+                  }
+                  break;
+               }
+            case Key.T:
+               {
+                  if (!viewModel.IsSpinning)
+                  {
+                     viewModel.MediaPlayer.Stop();
+                     viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
+                     viewModel.StartSpinning(128);
+                  }
+                  break;
+               }
+            case Key.Y:
+               {
+                  if (!viewModel.IsSpinning)
+                  {
+                     viewModel.MediaPlayer.Stop();
+                     viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
+                     viewModel.StartSpinning(132);
+                  }
+                  break;
+               }
+            default:
+               {
+                  viewModel.MediaPlayer.Stop();
+                  viewModel.IsSpinning = false;
+                  break;
+               }
+         }
       }
    }
 }
