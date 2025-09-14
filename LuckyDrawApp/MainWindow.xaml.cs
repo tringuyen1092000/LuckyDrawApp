@@ -110,6 +110,16 @@ public partial class MainWindow : Window
                   }
                   break;
                }
+            case Key.U:
+               {
+                  if (!viewModel.IsSpinning)
+                  {
+                     viewModel.MediaPlayer.Stop();
+                     viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
+                     viewModel.StartSpinning(081);
+                  }
+                  break;
+               }
             default:
                {
                   viewModel.MediaPlayer.Stop();
