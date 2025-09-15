@@ -33,99 +33,46 @@ public partial class MainWindow : Window
 
       if (DataContext is MainWindowViewModel viewModel)
       {
-         switch (e.Key)
+         if (viewModel.IsSpinning == false)
          {
-            case Key.Space:
-               {
-                  if (!viewModel.IsSpinning)
-                  {
-                     viewModel.MediaPlayer.Stop();
-                     viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
-                     viewModel.StartSpinning();
-                  }
-                  else
-                  {
-                     viewModel.MediaPlayer.Stop();
-                     viewModel.IsSpinning = false;
-                  }   
+            switch (e.Key)
+            {
+               case Key.Space:
+                  viewModel.StartSpinning();
                   break;
-               }
-            case Key.Q:
-               {
-                  if (!viewModel.IsSpinning)
-                  {
-                     viewModel.MediaPlayer.Stop();
-                     viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
-                     viewModel.StartSpinning(031);
-                  }
+               case Key.Q:
+                  viewModel.StartSpinning(031);
                   break;
-               }
-            case Key.W:
-               {
-                  if (!viewModel.IsSpinning)
-                  {
-                     viewModel.MediaPlayer.Stop();
-                     viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
-                     viewModel.StartSpinning(193);
-                  }
+               case Key.W:
+                  viewModel.StartSpinning(193);
                   break;
-               }
-            case Key.E:
-               {
-                  if (!viewModel.IsSpinning)
-                  {
-                     viewModel.MediaPlayer.Stop();
-                     viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
-                     viewModel.StartSpinning(051);
-                  }
+               case Key.E:
+                  viewModel.StartSpinning(051);
                   break;
-               }
-            case Key.R:
-               {
-                  if (!viewModel.IsSpinning)
-                  {
-                     viewModel.MediaPlayer.Stop();
-                     viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
-                     viewModel.StartSpinning(119);
-                  }
+               case Key.R:
+                  viewModel.StartSpinning(119);
                   break;
-               }
-            case Key.T:
-               {
-                  if (!viewModel.IsSpinning)
-                  {
-                     viewModel.MediaPlayer.Stop();
-                     viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
-                     viewModel.StartSpinning(128);
-                  }
+               case Key.T:
+                  viewModel.StartSpinning(128);
                   break;
-               }
-            case Key.Y:
-               {
-                  if (!viewModel.IsSpinning)
-                  {
-                     viewModel.MediaPlayer.Stop();
-                     viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
-                     viewModel.StartSpinning(132);
-                  }
+               case Key.Y:
+                  viewModel.StartSpinning(132);
                   break;
-               }
-            case Key.U:
-               {
-                  if (!viewModel.IsSpinning)
-                  {
-                     viewModel.MediaPlayer.Stop();
-                     viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
-                     viewModel.StartSpinning(081);
-                  }
+               case Key.U:
+                  viewModel.StartSpinning(081);
                   break;
-               }
-            default:
-               {
-                  viewModel.MediaPlayer.Stop();
-                  viewModel.IsSpinning = false;
-                  break;
-               }
+               default: break;
+            }
+         }
+         else
+         {
+            if (e.Key == Key.Space)
+            {
+               // If already spinning, stop the spinning
+               viewModel.MediaPlayer.Stop();
+               viewModel.LuckyNumberList.Remove(viewModel.LuckyNumber);
+               viewModel.IsSpinning = false;
+            }
          }
       }
    }
